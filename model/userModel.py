@@ -1,6 +1,6 @@
 from typing import List, Optional
 from uuid import UUID, uuid4
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from enum import Enum
 from pydantic import BaseModel
 
@@ -10,10 +10,11 @@ class Gender(str, Enum):
 class Role(str, Enum):
  lecturer = "lecturer"
  user = "user"
-class User(BaseModel):
- id: Optional[UUID] = uuid4()
- first_name: str
- last_name: str
+
+class UserModel(BaseModel):
+ uid: Optional[UUID] = uuid4()
+ first_name: str = Field(..., example="Yhemmy")
+ last_name: str = Field(..., example="John")
  gender: Gender
  aws_credit: int
  roles: List[Role]

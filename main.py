@@ -2,7 +2,7 @@ import uvicorn
 from typing import List
 from uuid import uuid4
 from fastapi import FastAPI
-from models import Gender, Role, User
+from model.userModel import Gender, Role, User
 app = FastAPI()
 
 # default_credit=100
