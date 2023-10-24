@@ -22,8 +22,8 @@ def generate_table():
             }
         ],
         ProvisionedThroughput={             # specying read and write capacity units
-            'ReadCapacityUnits': 100,        # these two values really depend on the app's traffic
-            'WriteCapacityUnits': 100
+            'ReadCapacityUnits': 10,        # these two values really depend on the app's traffic
+            'WriteCapacityUnits': 10
         }
     )
     print('Successfully created table UserDetails')

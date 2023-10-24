@@ -1,59 +1,36 @@
+
 import uvicorn
-from typing import List
-from uuid import uuid4
-from fastapi import FastAPI
-from model.userModel import Gender, Role, User
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from pathlib import Path
+
+from src.internal.db import initialize_db
+from src.repository.users import UserRepository
+from src.router.user import UsersRouter
+
 app = FastAPI()
+db = initialize_db()
 
-# default_credit=100
-# db: List[User] = [
-#     User(
-#     id=uuid4(),
-#     first_name="John",
-#     last_name="Doe",
-#     gender=Gender.male,
-#     aws_credit =default_credit,
-#     roles=[Role.user],
-#     ),
-#     User(
-#     id=uuid4(),
-#     first_name="Jane",
-#     last_name="Doe",
-#     gender=Gender.female,
-#     aws_credit =default_credit,
-#     roles=[Role.user],
-#     ),
-#     User(
-#     id=uuid4(),
-#     first_name="James",
-#     last_name="Gabriel",
-#     gender=Gender.male,
-#     aws_credit =default_credit,
-#     roles=[Role.user],
-#     ),
-#     User(
-#     id=uuid4(),
-#     first_name="Eunit",
-#     last_name="Eunit",
-#     gender=Gender.male,
-#     aws_credit =default_credit,
-#     roles=[Role.lecturer, Role.user],
-#     ),
-# ]
+user_repository = UserRepository(db)
+user_router = UsersRouter(user_repository)
 
-@app.get("/")
-async def root():
-    return {"greeting":"Welcome to Cloud Architecture Module"}
+app.include_router(user_router.router)
+temp_dir = Path.joinpath(Path.cwd(),"src/views")
+templates = Jinja2Templates(directory=temp_dir)
 
-# @app.get("/api/v1/users")
-# async def get_users():
-#     return db
 
-# @app.post("/api/v1/users")
-# async def create_user(user: User):
-#  db.append(user)
-#  return {"id": user.id}
+@app.get('/',response_class=HTMLResponse)
+async def index(request: Request):
+    message = "Welcome to SETU Modules Portal"
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "message": message,
+        })
+
 
 
 if __name__ == '__main__':
-    uvicorn.run("main:app", host="0.0.0.0", port=5001, log_level="info", reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=5002, log_level="info", reload=True)

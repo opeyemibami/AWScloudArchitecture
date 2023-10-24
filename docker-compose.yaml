@@ -1,13 +1,13 @@
 version: "3.8"
 services:
-  app:
-    build: .
-    volumes:
-      - "./:/app"
-    ports:
-      - "5001:5001"
-    depends_on:
-      - db
+  # app:
+  #   build: .
+  #   volumes:
+  #     - "./:/app"
+  #   ports:
+  #     - "5001:5001"
+  #   depends_on:
+  #     - db
   db:
     image: amazon/dynamodb-local
     restart: unless-stopped

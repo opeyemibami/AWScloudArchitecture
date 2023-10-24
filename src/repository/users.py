@@ -1,7 +1,8 @@
 from botocore.exceptions import ClientError
 from boto3.resources.base import ServiceResource
+# from src.model.userModel import UserModel
 
-class RecipesRepository:
+class UserRepository:
     def __init__(self, db: ServiceResource) -> None:
         self.__db = db          # db resource will be injected when this repository is created in the main.py
 
@@ -10,7 +11,7 @@ class RecipesRepository:
         response = table.scan()             # scan all data
         return response.get('Items', [])    # return data
 
-    def get_user(self, uid: str):
+    def get_user(self,uid: str):
         try:
             table = self.__db.Table('UserDetails')          # referencing to table Recipes
             response = table.get_item(Key={'uid': uid})     # get recipe using uid (partition key)
@@ -18,8 +19,9 @@ class RecipesRepository:
         except ClientError as e:
             raise ValueError(e.response['Error']['Message'])
 
-    def create_user(self, user: dict):
+    def create_user(self,userdetails):
         table = self.__db.Table('UserDetails')      # referencing to table Recipes
+        user = userdetails.dict()
         response = table.put_item(Item=user)  # create recipe
         return response                         # return response from dynamodb
     
@@ -46,7 +48,7 @@ class RecipesRepository:
     #     )
     #     return response
 
-    def delete_recipe(self, uid: str):
+    def delete_user(self,uid: str):
         table = self.__db.Table('UserDetails')      # referencing to table Recipes
         response = table.delete_item(           # delete recipe using uuid
             Key={'uid': uid}
