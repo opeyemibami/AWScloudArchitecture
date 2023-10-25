@@ -9,7 +9,7 @@ class Gender(str, Enum):
  female = "female"
 class Role(str, Enum):
  lecturer = "lecturer"
- user = "user"
+ user = "student"
 
 class UserModel(BaseModel):
  uid: Optional[str] = uuid4()

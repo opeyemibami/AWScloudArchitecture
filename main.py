@@ -5,12 +5,13 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 
-from src.internal.db import initialize_db
+from src.internal.db import initialize_db,initialize_db_aws
 from src.repository.users import UserRepository
 from src.router.user import UsersRouter
 
 app = FastAPI()
-db = initialize_db()
+# db = initialize_db()
+db = initialize_db_aws()
 
 user_repository = UserRepository(db)
 user_router = UsersRouter(user_repository)
