@@ -1,4 +1,5 @@
 #!/bin/bash
-echo "bash script running"
+source env/bin/activate
 cd "$(dirname "$0")"
-uvicorn main:app --host=0.0.0.0 --workers=4
+uvicorn main:app --host=0.0.0.0 --workers=1
+echo "bash script running"
